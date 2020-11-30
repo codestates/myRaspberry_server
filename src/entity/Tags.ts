@@ -5,7 +5,6 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm'
-import {TagInfo} from '.'
 
 @Entity()
 export default class Tag extends BaseEntity {
@@ -17,11 +16,4 @@ export default class Tag extends BaseEntity {
 
   @Column()
   name!: string
-
-  @OneToMany(type => TagInfo, tag_info => tag_info.tag, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  links!: TagInfo[]
 }

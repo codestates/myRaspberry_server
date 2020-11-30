@@ -5,7 +5,6 @@ import {
   BaseEntity,
   OneToMany,
 } from 'typeorm'
-import {TagInfo} from '.'
 
 @Entity()
 export default class Movie extends BaseEntity {
@@ -34,7 +33,7 @@ export default class Movie extends BaseEntity {
   plotEng!: string
 
   @Column()
-  runtime!: string
+  runtime!: number
 
   @Column()
   genre!: string
@@ -42,10 +41,6 @@ export default class Movie extends BaseEntity {
   @Column()
   image!: string
 
-  @OneToMany(type => TagInfo, tag_info => tag_info.movie, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  links!: TagInfo[]
+  @Column('json')
+  tag!: string
 }

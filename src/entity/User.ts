@@ -5,7 +5,6 @@ import {
   BaseEntity,
   OneToMany,
 } from 'typeorm'
-import {TagInfo} from '.'
 
 @Entity()
 export default class User extends BaseEntity {
@@ -29,11 +28,4 @@ export default class User extends BaseEntity {
 
   @Column({default: true})
   isActive!: boolean
-
-  @OneToMany(type => TagInfo, tag_info => tag_info.user, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  links!: TagInfo[]
 }
