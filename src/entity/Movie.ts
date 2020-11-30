@@ -41,6 +41,6 @@ export default class Movie extends BaseEntity {
   @Column()
   image!: string
 
-  @Column('json')
+  @Column()
   tag!: string
 }
