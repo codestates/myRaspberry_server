@@ -1,10 +1,18 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  OneToMany,
-} from 'typeorm'
+import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from 'typeorm'
+
+interface SingleMovie {
+  title: string
+  titleEng: string
+  date: string
+  director: string
+  actor: string
+  plotKr: string
+  plotEng?: string
+  runtime: number
+  genre: string
+  image: string
+  tag: string
+}
 
 @Entity()
 export default class Movie extends BaseEntity {
@@ -18,7 +26,7 @@ export default class Movie extends BaseEntity {
   titleEng!: string
 
   @Column()
-  year!: string
+  date!: string
 
   @Column()
   director!: string
@@ -29,7 +37,7 @@ export default class Movie extends BaseEntity {
   @Column()
   plotKr!: string
 
-  @Column()
+  @Column({nullable: true})
   plotEng!: string
 
   @Column()
@@ -43,4 +51,15 @@ export default class Movie extends BaseEntity {
 
   @Column()
   tag!: string
+
+  static async MovieRegister(movie: SingleMovie): Promise<Movie | undefined> {
+    const {id} = (
+      await this.createQueryBuilder()
+        .insert()
+        .into(Movie)
+        .values(movie)
+        .execute()
+    ).identifiers[0]
+    return id
+  }
 }
