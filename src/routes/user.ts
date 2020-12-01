@@ -2,16 +2,19 @@ import * as express from 'express'
 import {userController} from '../controller'
 const router = express.Router()
 
-//* GET /user/signin
-router.get('/signin', userController.signin)
+// POST /user/signin
+router.post('/signin', userController.signIn)
 
-//* GET /user/signup
-router.get('/signup', userController.signup)
+// POST /user/signup
+router.post('/signup', userController.signUp)
 
-//* GET /user/changeinfo
-router.get('/changeinfo', userController.changeinfo)
+// GET /user/signOut
+router.get('/signOut', userController.signOut)
 
-//* GET /user/deleteuser
-router.get('/deleteuser', userController.deleteuser)
+// GET /user/changeinfo
+router.get('/changeinfo', userController.changeInfo)
+
+// GET /user/deleteuser
+router.get('/deleteuser', userController.deleteUser)
 
 export default router
