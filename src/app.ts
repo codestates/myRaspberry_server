@@ -1,13 +1,24 @@
 import 'reflect-metadata'
-import * as express from 'express'
-import * as cookieParser from 'cookie-parser'
-import * as bodyParser from 'body-parser'
-import * as cors from 'cors'
-import * as morgan from 'morgan'
-import * as createError from 'http-errors'
+import express from 'express'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import morgan from 'morgan'
+import createError from 'http-errors'
 import {createConnection} from 'typeorm'
 import * as routes from './routes'
+import swaggerUi from 'swagger-ui-express'
+import * as swaggerDocument from './swagger.json'
+
 import 'dotenv/config'
+const http = require('http')
+const https = require('https')
+const fs = require('fs')
+const privateKey = fs.readFileSync(__dirname + '/cert/privkey.pem', 'utf8')
+const certificate = fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')
+const chain = fs.readFileSync(__dirname + '/cert/chain.pem', 'utf8')
+const credentials = {key: privateKey, cert: certificate, ca: chain}
+
 // NOTE  - typeorm connection
 createConnection()
   .then(() => console.log('typeorm connection complete'))
@@ -29,6 +40,7 @@ app.use(
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).json('Success')
 })
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // NOTE - Routers
 
@@ -52,8 +64,14 @@ app.use((err: any, req: express.Request, res: express.Response) => {
   res.render('error')
 })
 
-app.listen(process.env.PORT, () =>
-  console.log(`server running on port ${process.env.PORT}`),
+const httpServer = http.createServer(app)
+const httpsServer = https.createServer(credentials, app)
+
+httpServer.listen(process.env.HTTP_PORT, () =>
+  console.log(`http server listen '${process.env.HTTP_PORT}' PORT`),
+)
+httpsServer.listen(process.env.HTTPS_PORT, () =>
+  console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
 )
 
 module.exports = app
