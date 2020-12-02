@@ -8,7 +8,6 @@ import * as createError from 'http-errors'
 import {createConnection} from 'typeorm'
 import * as routes from './routes'
 import 'dotenv/config'
-
 // NOTE  - typeorm connection
 createConnection()
   .then(() => console.log('typeorm connection complete'))
@@ -36,6 +35,7 @@ app.get('/', (req: express.Request, res: express.Response) => {
 app.use('/user', routes.user)
 app.use('/intro', routes.intro)
 app.use('/main', routes.main)
+app.use('/search', routes.search)
 
 // NOTE  - ERR Handler
 app.use(
