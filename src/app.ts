@@ -1,12 +1,15 @@
 import 'reflect-metadata'
-import * as express from 'express'
-import * as cookieParser from 'cookie-parser'
-import * as bodyParser from 'body-parser'
-import * as cors from 'cors'
-import * as morgan from 'morgan'
-import * as createError from 'http-errors'
+import express from 'express'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import morgan from 'morgan'
+import createError from 'http-errors'
 import {createConnection} from 'typeorm'
 import * as routes from './routes'
+import swaggerUi from 'swagger-ui-express'
+import * as swaggerDocument from './swagger.json'
+
 import 'dotenv/config'
 const http = require('http')
 const https = require('https')
@@ -37,6 +40,7 @@ app.use(
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).json('Success')
 })
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // NOTE - Routers
 
