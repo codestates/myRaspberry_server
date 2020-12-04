@@ -1,6 +1,6 @@
-import user from './user'
 import intro from './intro'
 import main from './main'
-import search from './search'
+// import search from './search'
+import auth from './auth'
 
-export {user, intro, main, search}
+export {intro, main, auth}
