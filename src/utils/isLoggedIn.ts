@@ -7,24 +7,23 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     if (req.cookies.token) {
       const token = req.cookies.token
       const secret = process.env.JWT_SECRET
-      const decoded = jwt.verify(token, secret, (err, verifiedJwt) => {
+      const id = jwt.verify(token, secret, (err, verifiedJwt) => {
         if (err) {
           console.log('err here')
           res.send(err.message)
         } else {
-          return verifiedJwt
+          return verifiedJwt.id
         }
       })
 
-      res.locals.decoded = decoded
-
+      res.locals.decodedId = id
       next()
     } else {
-      res.status(403).send('로그인을 진행해주세요')
+      res.status(403).send('비로그인 상태입니다. 먼저 로그인을 진행해주세요')
     }
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      res.status(401).json('다시 로그인 해주세요.')
+      res.status(401).send('토큰이 만료되었습니다. 다시 로그인해주세요.')
       return
     }
   }

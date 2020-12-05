@@ -5,7 +5,7 @@ const basic = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  console.log(res.locals.decoded)
+  console.log(res.locals.decodedId)
   res.status(200).send('introDefault')
 }
 export {basic}

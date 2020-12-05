@@ -1,5 +1,4 @@
 import {Request, Response, NextFunction} from 'express'
-import {hashSync} from 'bcryptjs'
 
 const basic = async (
   req: Request,

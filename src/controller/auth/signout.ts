@@ -6,6 +6,6 @@ export default async (
 ): Promise<void> => {
   res.clearCookie('token')
   req.logout()
-  req.session.destroy(err => console.log(err))
+  // req.session.destroy(err => console.log(err))
   res.redirect('/')
 }

@@ -1,4 +1,3 @@
-import {Response} from 'express'
 import passport from 'passport'
 import * as passportLocal from 'passport-local'
 import * as passportGoogle from 'passport-google-oauth20'
@@ -11,13 +10,17 @@ const LocalStrategy = passportLocal.Strategy
 const GoogleStrategy = passportGoogle.Strategy
 const KakaoStrategy = passportKakao.Strategy
 
-passport.serializeUser((user, done) => {
-  return done(null, user)
-})
+// passport.serializeUser((user: any, done) => {
+//   return done(null, user.id)
+// })
 
-passport.deserializeUser((user, done) => {
-  return done(null, user)
-})
+// passport.deserializeUser((id, done) => {
+//   return User.findOne({where: {id}})
+//     .then(user => done(null, user))
+//     .catch(err => done(err))
+// })
+
+//로그인 전략 변경.
 
 interface authData {
   provider: string
@@ -30,11 +33,11 @@ const socialSign = async (
   data: authData,
   accessToken: string,
   refreshToken: string,
-  done: any,
+  done: Function,
 ) => {
   const {provider, socialId, username, profileImg} = data
 
-  const isUser = await User.findOne({where: {provider, socialId}})
+  const isUser: object = await User.findOne({where: {provider, socialId}})
 
   if (isUser) {
     return done(null, isUser)
@@ -52,19 +55,24 @@ const socialSign = async (
 passport.use(
   new LocalStrategy(
     {usernameField: 'email', passwordField: 'password'},
-    async function (username, password, done) {
+    async (
+      username: string,
+      password: string,
+      done: Function,
+    ): Promise<Function> => {
       let result = await User.findOne({email: username})
 
       if (result) {
         if (compareSync(password, result.password)) {
           delete result.password
-
           return done(null, result)
         } else {
-          return done(null, false)
+          return done(null, false, {message: '비밀번호가 일치하지 않습니다.'})
         }
       } else {
-        done(null, false)
+        return done(null, false, {
+          message: '일치하는 정보가 존재하지 않습니다.',
+        })
       }
     },
   ),
@@ -86,7 +94,7 @@ passport.use(
         username: profile.displayName,
         profileImg: profile.photos[0].value || 'none',
       }
-      socialSign(data, accessToken, refreshToken, done)
+      return socialSign(data, accessToken, refreshToken, done)
     },
   ),
 )
@@ -103,9 +111,9 @@ passport.use(
         provider: profile.provider,
         socialId: profile.id,
         username: profile.displayName,
-        profileImg: profile._json.properties.thumbnail_image,
+        profileImg: profile._json.properties.thumbnail_image || 'none',
       }
-      socialSign(data, accessToken, refreshToken, done)
+      return socialSign(data, accessToken, refreshToken, done)
     },
   ),
 )

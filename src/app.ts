@@ -32,14 +32,14 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan('dev'))
-app.use(
-  session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {maxAge: 60 * 60 * 1000},
-  }),
-)
+// app.use(
+//   session({
+//     secret: 'keyboard cat',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {maxAge: 60 * 60 * 1000},
+//   }),
+// )
 app.use(
   cors({
     origin: ['*'],
@@ -49,7 +49,7 @@ app.use(
 )
 
 app.use(passport.initialize())
-app.use(passport.session())
+// app.use(passport.session())
 
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).json('Success')
