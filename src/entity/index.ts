@@ -1,6 +1,6 @@
 import User from './User'
-// import Movie from './Movie'
-// import Tag from './Tags'
+import Handlemovie from './handlemovie'
+import Tag from './Tag'
 
-export {User}
+export {User, Handlemovie, Tag}
 //Movie, Tag
