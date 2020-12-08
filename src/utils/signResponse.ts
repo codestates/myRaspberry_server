@@ -26,11 +26,11 @@ export default async (
       // secure: true,
     })
     if (user.provider === 'local') {
-      const {username, email, profileImg} = user
-      return res.status(200).send({username, email, profileImg})
+      const {username, email, profileImg, tag} = user
+      return res.status(200).send({username, email, profileImg, tag})
     } else {
-      const {username, profileImg} = user
-      return res.status(200).send({username, profileImg})
+      const {username, profileImg, tag} = user
+      return res.status(200).send({username, profileImg, tag})
     }
   })
 }
