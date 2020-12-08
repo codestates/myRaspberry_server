@@ -26,10 +26,12 @@ export default class User extends BaseEntity {
   @Column({default: true})
   isActive: boolean
 
+  @Column({default: true})
+  isFirst: boolean
+
   @Column({type: 'mediumtext'})
-  like: string
-  @Column({type: 'mediumtext'})
-  unLike: string
+  tag: string
+
   static async register(
     email: string,
     password: string,
@@ -39,7 +41,7 @@ export default class User extends BaseEntity {
       await this.createQueryBuilder()
         .insert()
         .into(User)
-        .values([{email, password, username, like: '', unLike: ''}])
+        .values([{email, password, username, tag: ''}])
         .execute()
     ).identifiers[0] // 리턴값 = [ { id: 6 } ]
 
@@ -56,9 +58,7 @@ export default class User extends BaseEntity {
       await this.createQueryBuilder()
         .insert()
         .into(User)
-        .values([
-          {provider, socialId, username, profileImg, like: '', unLike: ''},
-        ])
+        .values([{provider, socialId, username, profileImg, tag: ''}])
         .execute()
     ).identifiers[0] // 리턴값 = [ { id: 6 } ]
 
