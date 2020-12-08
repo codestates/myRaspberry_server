@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["es5", "es6"],
+    "target": "es6",
+    "outDir": "dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true, // swager쓰려면 true해야함
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {"*": ["node_modules/*"]}
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
