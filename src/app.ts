@@ -16,11 +16,12 @@ require('./passport')
 
 import 'dotenv/config'
 const http = require('http')
-// const https = require('https')
-// const fs = require('fs')
-// const privateKey = fs.readFileSync(__dirname + '/cert/privkey.pem', 'utf8')
-// const certificate = fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')
-// const credentials = {key: privateKey, cert: certificate}
+const https = require('https')
+const fs = require('fs')
+const privateKey = fs.readFileSync(__dirname + '/cert/privkey.pem', 'utf8')
+const certificate = fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')
+const chain = fs.readFileSync(__dirname + '/cert/chain.pem', 'utf8')
+const credentials = {key: privateKey, cert: certificate, ca: chain}
 
 // NOTE  - typeorm connection2
 createConnection()
@@ -40,6 +41,7 @@ app.use(morgan('dev'))
 //     cookie: {maxAge: 60 * 60 * 1000},
 //   }),
 // )
+
 app.use(
   cors({
     origin: ['*'],
@@ -61,7 +63,7 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/auth', routes.auth)
 app.use('/intro', isLoggedIn, routes.intro)
 app.use('/main', routes.main)
-// app.use('/search', routes.search)
+app.use('/search', routes.search)
 
 // NOTE  - ERR Handler
 app.use(
@@ -79,13 +81,13 @@ app.use((err: any, req: express.Request, res: express.Response) => {
 })
 
 const httpServer = http.createServer(app)
-// const httpsServer = https.createServer(credentials, app)
+const httpsServer = https.createServer(credentials, app)
 
 httpServer.listen(process.env.HTTP_PORT, () =>
   console.log(`http server listen '${process.env.HTTP_PORT}' PORT`),
 )
-// httpsServer.listen(process.env.HTTPS_PORT, () =>
-//   console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
-// )
+httpsServer.listen(process.env.HTTPS_PORT, () =>
+  console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
+)
 
 module.exports = app
