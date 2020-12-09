@@ -64,4 +64,18 @@ export default class User extends BaseEntity {
 
     return this.findOne({id})
   }
+
+  static async changeInfo(id: number, data: object): Promise<User | boolean> {
+    const result = await this.createQueryBuilder()
+      .update(User)
+      .set(data)
+      .where('id = :id', {id})
+      .execute()
+
+    if (result.raw.affectedRows === 0) {
+      return false
+    }
+
+    return this.findOne({id})
+  }
 }
