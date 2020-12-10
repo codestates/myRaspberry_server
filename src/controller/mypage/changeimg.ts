@@ -22,7 +22,7 @@ export default async (
 
   console.log(result)
   result
-    ? res.status(201).send('사진 변경에 성공했습니다.')
-    : res.status(401).send('사진 변경에 실패했습니다.')
+    ? res.status(200).send('사진 변경에 성공했습니다.')
+    : res.status(400).send({message: '사진 변경에 실패했습니다.'})
   return
 }
