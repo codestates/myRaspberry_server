@@ -1,6 +1,6 @@
 import {LessThan, Like, MoreThan, Not} from 'typeorm'
 
-export function getOptions(method: string | ""): object {
+function getOptions(method: string | ""): object {
     const obj = {
       where: {},
       order: { date: "DESC" },
@@ -27,3 +27,5 @@ export function getOptions(method: string | ""): object {
         return obj;
     }
   }
+
+  export { getOptions };
