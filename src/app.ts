@@ -61,9 +61,10 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // // NOTE - Routers
 app.use('/auth', routes.auth)
-app.use('/intro', isLoggedIn, routes.intro)
+app.use('/intro', routes.intro)
 app.use('/main', routes.main)
 app.use('/search', routes.search)
+app.use('/mypage', isLoggedIn, routes.mypage)
 
 // NOTE  - ERR Handler
 app.use(
