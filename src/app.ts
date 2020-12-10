@@ -86,8 +86,8 @@ const httpsServer = https.createServer(credentials, app)
 httpServer.listen(process.env.HTTP_PORT, () =>
   console.log(`http server listen '${process.env.HTTP_PORT}' PORT`),
 )
-httpsServer.listen(process.env.HTTPS_PORT, () =>
-  console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
-)
+// httpsServer.listen(process.env.HTTPS_PORT, () =>
+//   console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
+// )
 
 module.exports = app
