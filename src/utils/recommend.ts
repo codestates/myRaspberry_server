@@ -35,21 +35,21 @@ const getScore = (isLike: object | null, movie: number[]) : number => {
     const sum = matrix.reduce((a,c) => a+c.reduce((aa,cc)=>aa+cc,0), 0);
     return sum * 5;
   }
-  return 1000;
+  return 0;
 }
 
 const sortMovie = (user: any | null, movies: any[] | []) : object[] => {
-  if (user.favorite && movies) {
+  if (user.tag && movies) {
     const listOfMovie: MOVIE[] = [];
     movies.forEach((movie:MOVIE, index:number) => {
       movie.score = 1000;
       listOfMovie.push(movie);
-      listOfMovie[index].score += getScore(user.favorite.like, listOfMovie[index].tag);
-      listOfMovie[index].score -= getScore(user.favorite.dislike, listOfMovie[index].tag);
+      listOfMovie[index].score += getScore(user.tag.like, listOfMovie[index].tag);
+      listOfMovie[index].score -= getScore(user.tag.dislike, listOfMovie[index].tag);
     })
     return listOfMovie.sort((a: MOVIE,b: MOVIE)=>(b.score - a.score));
   }
-  return null;
+  return movies;
 }
 
 export { sortMovie };
