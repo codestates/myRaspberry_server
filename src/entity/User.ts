@@ -1,5 +1,10 @@
 import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from 'typeorm'
 
+interface UserTag {
+  like: object
+  dislike: object
+}
+
 @Entity()
 export default class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -37,11 +42,16 @@ export default class User extends BaseEntity {
     password: string,
     username: string,
   ): Promise<User | undefined> {
+    const tag: UserTag = {
+      like: {},
+      dislike: {},
+    }
+
     const {id} = (
       await this.createQueryBuilder()
         .insert()
         .into(User)
-        .values([{email, password, username, tag: ''}])
+        .values([{email, password, username, tag: JSON.stringify(tag)}])
         .execute()
     ).identifiers[0] // 리턴값 = [ { id: 6 } ]
 
@@ -54,11 +64,17 @@ export default class User extends BaseEntity {
     username: string,
     profileImg: string,
   ): Promise<User | undefined> {
+    const tag: UserTag = {
+      like: {},
+      dislike: {},
+    }
     const {id} = (
       await this.createQueryBuilder()
         .insert()
         .into(User)
-        .values([{provider, socialId, username, profileImg, tag: ''}])
+        .values([
+          {provider, socialId, username, profileImg, tag: JSON.stringify(tag)},
+        ])
         .execute()
     ).identifiers[0] // 리턴값 = [ { id: 6 } ]
 
