@@ -1,5 +1,6 @@
 import * as express from 'express'
 import {authController} from '../controller'
+import {isLoggedIn} from '../utils'
 
 const router = express.Router()
 
@@ -11,7 +12,7 @@ router.post('/signup', authController.localsignup)
 router.post('/signin', authController.localsignin)
 
 // GET, /auth/signout
-router.get('/signout', authController.signout)
+router.get('/signout', isLoggedIn, authController.signout)
 
 // Social Sign
 
