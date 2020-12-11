@@ -2,5 +2,7 @@
 import convertJsonToData from './removeQuete'
 import isLoggedIn from './isLoggedIn'
 import signResponse from './signResponse'
+import {getOptions} from './lib/utils';
+import {sortMovie} from './recommend';
 
-export {isLoggedIn, signResponse, convertJsonToData}
+export {isLoggedIn, signResponse, convertJsonToData, getOptions, sortMovie}

@@ -10,19 +10,19 @@ export default async (
   next: NextFunction,
 ): Promise<void> => {
   const id = res.locals.decodedId
-  const {profileImg} = await User.findOne({id})
-
-  if (profileImg !== 'noPath') {
-    const imgDelete = deleteImg(profileImg)
-    imgDelete ? null : next(imgDelete)
-  }
+  await User.findOne({id})
+    .then(user => {
+      user.profileImg === 'noPath' ? null : deleteImg(user.profileImg)
+    })
+    .catch(err => next(err))
 
   const infoData = {profileImg: req.file.location}
-  let result = await User.changeInfo(id, infoData)
 
-  console.log(result)
-  result
-    ? res.status(201).send('사진 변경에 성공했습니다.')
-    : res.status(401).send('사진 변경에 실패했습니다.')
-  return
+  await User.changeInfo(id, infoData)
+    .then(() => {
+      return res.status(200).send('사진 변경에 성공했습니다.')
+    })
+    .catch(err => {
+      return res.status(400).send({message: '사진 변경에 실패했습니다.'})
+    })
 }

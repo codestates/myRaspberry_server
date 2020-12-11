@@ -21,7 +21,6 @@ const KakaoStrategy = passportKakao.Strategy
 // })
 
 //로그인 전략 변경.
-
 interface authData {
   provider: string
   username: string
@@ -86,8 +85,6 @@ passport.use(
       callbackURL: '/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log('accessToken', accessToken)
-      console.log('refreshToken', refreshToken)
       const data: authData = {
         provider: profile.provider,
         socialId: profile.id,

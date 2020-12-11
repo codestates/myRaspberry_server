@@ -23,7 +23,7 @@ const certificate = fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')
 const chain = fs.readFileSync(__dirname + '/cert/chain.pem', 'utf8')
 const credentials = {key: privateKey, cert: certificate, ca: chain}
 
-// NOTE  - typeorm connection2
+// NOTE  - typeorm connection
 createConnection()
   .then(() => console.log('typeorm connection complete'))
   .catch(error => console.log('TypeORM connection error: ', error))
@@ -42,13 +42,13 @@ app.use(morgan('dev'))
 //   }),
 // )
 
-app.use(
-  cors({
-    origin: ['*'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true,
-  }),
-)
+app.use(cors())
+//   cors({
+//     origin: ['*'],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+//     credentials: true,
+//   }),
+// )
 
 app.use(passport.initialize())
 // app.use(passport.session())
@@ -61,9 +61,8 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // // NOTE - Routers
 app.use('/auth', routes.auth)
-app.use('/intro', routes.intro)
-app.use('/main', routes.main)
-app.use('/search', routes.search)
+app.use('/movie', isLoggedIn, routes.movie)
+app.use('/search', isLoggedIn, routes.search)
 app.use('/mypage', isLoggedIn, routes.mypage)
 
 // NOTE  - ERR Handler
@@ -87,8 +86,8 @@ const httpsServer = https.createServer(credentials, app)
 httpServer.listen(process.env.HTTP_PORT, () =>
   console.log(`http server listen '${process.env.HTTP_PORT}' PORT`),
 )
-httpsServer.listen(process.env.HTTPS_PORT, () =>
-  console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
-)
+// httpsServer.listen(process.env.HTTPS_PORT, () =>
+//   console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
+// )
 
 module.exports = app
