@@ -9,7 +9,14 @@ export default async (
   user: any,
   info?: object,
 ): Promise<void> => {
-  err || info ? (err ? next(err) : res.status(400).send(info)) : null
+  if (err || info) {
+    if (err) {
+      next(err)
+    } else {
+      res.status(400).send(info)
+      return
+    }
+  }
   req.login(user, {session: false}, err => {
     err ? next(err) : null
 
@@ -23,6 +30,7 @@ export default async (
     })
     const {username, profileImg, tag} = user
 
-    return res.status(200).send({username, profileImg, tag: JSON.parse(tag)})
+    res.status(200).send({username, profileImg, tag: JSON.parse(tag)})
+    return
   })
 }

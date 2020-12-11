@@ -1,9 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from 'typeorm'
-
-interface UserTag {
-  like: object
-  dislike: object
-}
+import {UserTag} from '../definitions/index'
 
 @Entity()
 export default class User extends BaseEntity {

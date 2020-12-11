@@ -1,15 +1,16 @@
 import * as express from 'express'
-import {mypageController} from '../controller'
 const router = express.Router()
-import {upload} from '../utils/imageUpload'
+import {mypageController} from '../controller'
+import {uploadImg} from '../utils'
 
-// PUT /mypage/default
+// PATCH /mypage/changeinfo
 router.patch('/changeinfo', mypageController.changeinfo)
 
-// POST /mypage/changeimg
-router.patch('/changeimage', upload.single('img'), mypageController.changeimg)
-//   (req: express.Request, res: express.Response) => {
-//     console.log(req.file)
-//   },
+// PATCH /mypage/changeimg
+router.patch(
+  '/changeimage',
+  uploadImg.single('img'),
+  mypageController.changeimg,
+)
 
 export default router

@@ -18,14 +18,17 @@ export default async (req: Request, res: Response): Promise<void> => {
   const tags = await User.findOne({id}).then(user => {
     return JSON.parse(user.tag)
   })
+
   const dbMovies = await Handlemovie.find(options).then(data =>
     data.map(el => convertJsonToData(el)),
   )
   const results = sortMovie(tags, dbMovies)
 
-  if (results) {
+  if (results.length) {
     res.status(200).send(results)
+    return
   } else {
-    res.status(200).send('nothing found')
+    res.status(200).send('해당 영화를 찾지 못했습니다.')
+    return
   }
 }
