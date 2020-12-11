@@ -10,7 +10,6 @@ import * as routes from './routes'
 import swaggerUi from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
 import passport from 'passport'
-import session from 'express-session'
 import {isLoggedIn} from './utils'
 require('./passport')
 
@@ -33,14 +32,6 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan('dev'))
-// app.use(
-//   session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {maxAge: 60 * 60 * 1000},
-//   }),
-// )
 
 app.use(cors())
 //   cors({
@@ -51,19 +42,18 @@ app.use(cors())
 // )
 
 app.use(passport.initialize())
-// app.use(passport.session())
 
 app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).json('Success')
 })
-
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // // NOTE - Routers
 app.use('/auth', routes.auth)
 app.use('/movie', isLoggedIn, routes.movie)
 app.use('/search', isLoggedIn, routes.search)
 app.use('/mypage', isLoggedIn, routes.mypage)
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // NOTE  - ERR Handler
 app.use(
@@ -76,7 +66,9 @@ app.use((err: any, req: express.Request, res: express.Response) => {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  res.status(err.status || 500).send(err.message || 'SERVER FAULT')
+  res.status(err.status || 500).send({
+    message: err.message || '서버에 문제가 있습니다. 관리자에게 문의해주세요',
+  })
   res.render('error')
 })
 

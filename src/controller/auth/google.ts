@@ -20,7 +20,9 @@ export const googleCallBack = async (
 ): Promise<void> => {
   passport.authenticate(
     'google',
-    (err: Error, data: object, info: object): Promise<void> =>
-      signResponse(req, res, next, err, data, info),
+    (err: Error, data: object, info: object): Promise<void> => {
+      signResponse(req, res, next, err, data, info)
+      return
+    },
   )(req, res, next)
 }
