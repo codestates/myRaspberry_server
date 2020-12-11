@@ -7,16 +7,12 @@ export default async (
   next: NextFunction,
   err: Error,
   user: any,
-  info?: any,
-) => {
-  if (err || info) {
-    err ? next(err) : res.status(400).send(info)
-    return
-  }
+  info?: object,
+): Promise<void> => {
+  err || info ? (err ? next(err) : res.status(400).send(info)) : null
   req.login(user, {session: false}, err => {
-    if (err) {
-      next(err)
-    }
+    err ? next(err) : null
+
     const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
       expiresIn: '7d',
     })
@@ -26,6 +22,7 @@ export default async (
       // secure: true,
     })
     const {username, profileImg, tag} = user
-    return res.status(200).send({username, profileImg, tag})
+
+    return res.status(200).send({username, profileImg, tag: JSON.parse(tag)})
   })
 }
