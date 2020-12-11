@@ -5,6 +5,12 @@
     "title": "MY RASPBERRY",
     "description": "MY RASPBERRY API DOCS"
   },
+  "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/licenses/MIT"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
   "tags": [
     {
       "name": "Auth",
@@ -16,13 +22,14 @@
     },
     {
       "name": "Movie",
-      "description": "영화 추천과 관련된 정보를 담고 있는 라우트입니다."
+      "description": "영화 추천 / 선택과 관련된 정보를 담고 있는 라우트입니다."
     },
     {
-      "name": "SEARCH",
+      "name": "Search",
       "description": "영화 검색과 관련된 정보를 담고 있는 라우트입니다."
     }
   ],
+  "schemes": ["http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
@@ -48,6 +55,9 @@
           },
           "400": {
             "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
@@ -77,6 +87,9 @@
           },
           "400": {
             "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
@@ -94,6 +107,9 @@
           },
           "403": {
             "description": "{message: '먼저 로그인을 진행해주세요'.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
@@ -111,6 +127,9 @@
           },
           "400": {
             "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
@@ -128,6 +147,9 @@
           },
           "400": {
             "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
@@ -137,7 +159,7 @@
         "tags": ["Mypage"],
         "summary": "유저 정보를 변경합니다.",
         "requestBody": {
-          "description": "changeInfo object",
+          "description": "Sign Object",
           "required": true,
           "content": {
             "application/json": {
@@ -154,6 +176,9 @@
           },
           "400": {
             "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
@@ -171,7 +196,7 @@
                 "properties": {
                   "img": {
                     "type": "string",
-                    "default": "sending image File"
+                    "description": "input name=img로 사진을 전송합니다."
                   }
                 }
               }
@@ -185,21 +210,24 @@
           },
           "400": {
             "description": "{message: '사진 변경에 실패했습니다.'}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
     },
-    "/search/:method/": {
-      "get": {
-        "tags": ["SEARCH"],
-        "summary": "서치 디폴트 요청입니다.",
+    "/movie/updatetag": {
+      "patch": {
+        "tags": ["Movie"],
+        "summary": "유저가 좋아요/ 싫어요를 누른 태그를 반영합니다.",
         "requestBody": {
-          "description": "Cat Object",
+          "description": "Tag Object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/userinfo"
+                "$ref": "#/definitions/tag"
               }
             }
           }
@@ -207,19 +235,47 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/userinfo"
-            }
+            "description": "ok"
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "{message: '에러 내용을 전송합니다.'}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+          }
+        }
+      }
+    },
+    "/search/{method}": {
+      "parameters": [
+        {
+          "name": "method",
+          "in": "path",
+          "required": true,
+          "description": "kor/eng/short/long 혹은 태그 숫자를 입력합니다. 그 외 요청은 신작영화로 전송합니다.",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Search"],
+        "summary": "영화를 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다.",
+            "schema": {
+              "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
           }
         }
       }
     }
   },
-
   "definitions": {
     "userinfo": {
       "type": "object",
@@ -251,7 +307,6 @@
         }
       }
     },
-
     "sign": {
       "type": "object",
       "properties": {
@@ -260,6 +315,70 @@
         },
         "password": {
           "type": "string"
+        }
+      }
+    },
+    "scoredMovie": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": "number",
+          "docid": "string",
+          "title": "string",
+          "titleEng": "string",
+          "director": "string",
+          "actor": "string",
+          "plotKr": "string",
+          "plotEng": "",
+          "runtime": "number",
+          "genre": "string",
+          "image": {
+            "type": "object",
+            "properties": {
+              "posters": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "stlls": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "tag": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "date": "string",
+          "score": "number"
+        }
+      }
+    },
+    "tag": {
+      "type": "object",
+      "properties": {
+        "like": {
+          "type": "object",
+          "properties": {
+            "tagnum": {
+              "type": "number"
+            }
+          }
+        },
+        "disLike": {
+          "type": "object",
+          "properties": {
+            "tagnum": {
+              "type": "number"
+            }
+          }
         }
       }
     }
