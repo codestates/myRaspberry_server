@@ -11,6 +11,7 @@ import swaggerUi from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
 import passport from 'passport'
 import {isLoggedIn} from './utils'
+import path from 'path'
 require('./passport')
 
 import 'dotenv/config'
@@ -44,7 +45,7 @@ app.use(cors())
 app.use(passport.initialize())
 
 app.get('/', (req: express.Request, res: express.Response) => {
-  res.status(200).json('Success')
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
 // // NOTE - Routers
