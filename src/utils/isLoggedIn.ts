@@ -19,12 +19,16 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       res.locals.decodedId = id
       next()
     } else {
-      res.status(403).send('비로그인 상태입니다. 먼저 로그인을 진행해주세요')
+      res.status(403).send({message: '먼저 로그인을 진행해주세요'})
     }
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      res.status(401).send('토큰이 만료되었습니다. 다시 로그인해주세요.')
+      res
+        .status(401)
+        .send({message: '토큰이 만료되었습니다. 다시 로그인을 진행해주세요'})
       return
+    } else {
+      next(err)
     }
   }
 }
