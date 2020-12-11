@@ -18,9 +18,11 @@ export default async (
     let register: object = await User.register(email, passhash, username)
 
     if (!register) {
-      return res.send(400).send({message: '회원 가입에 실패했습니다.'})
+      res.send(400).send({message: '회원 가입에 실패했습니다.'})
+      return
     } else {
-      return res.status(201).send('회원가입에 성공했습니다.')
+      res.status(201).send('회원가입에 성공했습니다.')
+      return
     }
   }
 }

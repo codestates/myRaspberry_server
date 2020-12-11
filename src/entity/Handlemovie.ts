@@ -1,19 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from 'typeorm'
-
-interface SingleMovie {
-  title: string
-  titleEng: string
-  date: string
-  director: string
-  actor: string
-  plotKr: string
-  plotEng?: string
-  runtime: number
-  genre: string
-  image: string
-  tag: string
-}
-
+import {SingleMovie} from '../definitions'
 @Entity()
 export default class Handlemovie extends BaseEntity {
   @PrimaryGeneratedColumn()

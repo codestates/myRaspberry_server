@@ -10,7 +10,9 @@ export default async (
 ): Promise<void> => {
   passport.authenticate(
     'local',
-    (err: Error, data: object, info: object): Promise<void> =>
-      signResponse(req, res, next, err, data, info),
+    (err: Error, data: object, info: object): Promise<void> => {
+      signResponse(req, res, next, err, data, info)
+      return
+    },
   )(req, res, next)
 }

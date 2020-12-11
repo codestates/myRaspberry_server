@@ -1,7 +1,6 @@
-import {profile} from 'console'
 import {Request, Response, NextFunction} from 'express'
 import User from '../../entity/User'
-import {deleteImg} from '../../utils/imageDelete'
+import {deleteImg} from '../../utils/index'
 
 //NOTE req에 Request를 입력하면 이상하게 req.file.location을 못읽어옵니다...
 export default async (
@@ -20,9 +19,11 @@ export default async (
 
   await User.changeInfo(id, infoData)
     .then(() => {
-      return res.status(200).send('사진 변경에 성공했습니다.')
+      res.status(200).send('사진 변경에 성공했습니다.')
+      return
     })
     .catch(err => {
-      return res.status(400).send({message: '사진 변경에 실패했습니다.'})
+      res.status(400).send({message: '사진 변경에 실패했습니다.'})
+      return
     })
 }
