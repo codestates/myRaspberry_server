@@ -10,19 +10,20 @@ import * as routes from './routes'
 import swaggerUi from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
 import passport from 'passport'
-import session from 'express-session'
 import {isLoggedIn} from './utils'
+import path from 'path'
 require('./passport')
 
 import 'dotenv/config'
 const http = require('http')
-// const https = require('https')
-// const fs = require('fs')
-// const privateKey = fs.readFileSync(__dirname + '/cert/privkey.pem', 'utf8')
-// const certificate = fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')
-// const credentials = {key: privateKey, cert: certificate}
+const https = require('https')
+const fs = require('fs')
+const privateKey = fs.readFileSync(__dirname + '/cert/privkey.pem', 'utf8')
+const certificate = fs.readFileSync(__dirname + '/cert/cert.pem', 'utf8')
+const chain = fs.readFileSync(__dirname + '/cert/chain.pem', 'utf8')
+const credentials = {key: privateKey, cert: certificate, ca: chain}
 
-// NOTE  - typeorm connection2
+// NOTE  - typeorm connection
 createConnection()
   .then(() => console.log('typeorm connection complete'))
   .catch(error => console.log('TypeORM connection error: ', error))
@@ -32,36 +33,28 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(morgan('dev'))
-// app.use(
-//   session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {maxAge: 60 * 60 * 1000},
+
+app.use(cors())
+//   cors({
+//     origin: ['*'],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+//     credentials: true,
 //   }),
 // )
-app.use(
-  cors({
-    origin: ['*'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true,
-  }),
-)
 
 app.use(passport.initialize())
-// app.use(passport.session())
 
 app.get('/', (req: express.Request, res: express.Response) => {
-  res.status(200).json('Success')
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
-
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // // NOTE - Routers
 app.use('/auth', routes.auth)
-app.use('/intro', isLoggedIn, routes.intro)
-app.use('/main', routes.main)
-// app.use('/search', routes.search)
+app.use('/movie', isLoggedIn, routes.movie)
+app.use('/search', isLoggedIn, routes.search)
+app.use('/mypage', isLoggedIn, routes.mypage)
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // NOTE  - ERR Handler
 app.use(
@@ -74,18 +67,20 @@ app.use((err: any, req: express.Request, res: express.Response) => {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  res.status(err.status || 500).send(err.message || 'SERVER FAULT')
+  res.status(err.status || 500).send({
+    message: err.message || '서버에 문제가 있습니다. 관리자에게 문의해주세요',
+  })
   res.render('error')
 })
 
 const httpServer = http.createServer(app)
-// const httpsServer = https.createServer(credentials, app)
+const httpsServer = https.createServer(credentials, app)
 
 httpServer.listen(process.env.HTTP_PORT, () =>
   console.log(`http server listen '${process.env.HTTP_PORT}' PORT`),
 )
-// httpsServer.listen(process.env.HTTPS_PORT, () =>
-//   console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
-// )
+httpsServer.listen(process.env.HTTPS_PORT, () =>
+  console.log(`https server listen '${process.env.HTTPS_PORT}' PORT`),
+)
 
 module.exports = app

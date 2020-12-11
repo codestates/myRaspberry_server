@@ -5,38 +5,45 @@
     "title": "MY RASPBERRY",
     "description": "MY RASPBERRY API DOCS"
   },
+  "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/licenses/MIT"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
   "tags": [
     {
-      "name": "USER",
-      "description": "USER와 관련된 라우트입니다"
+      "name": "Auth",
+      "description": "Sign, 인증과 관련된 정보를 담고 있는 라우트입니다."
     },
     {
-      "name": "INTRO",
-      "description": "INTRO 페이지와 관련된 라우트입니다"
+      "name": "Mypage",
+      "description": "개인 정보 수정과 관련된 정보를 담고 있는 라우트입니다."
     },
     {
-      "name": "MAIN",
-      "description": "MAIN 페이지와 관련된 라우트입니다"
+      "name": "Movie",
+      "description": "영화 추천 / 선택과 관련된 정보를 담고 있는 라우트입니다."
     },
     {
-      "name": "SEARCH",
-      "description": "SEARCH와 관련된 라우트입니다"
+      "name": "Search",
+      "description": "영화 검색과 관련된 정보를 담고 있는 라우트입니다."
     }
   ],
+  "schemes": ["http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/user/signin": {
+    "/auth/signup": {
       "post": {
-        "tags": ["USER"],
-        "summary": "로그인을 진행합니다",
+        "tags": ["Auth"],
+        "summary": "회원 가입을 진행합니다",
         "requestBody": {
-          "description": "Sign In Object",
+          "description": "Sign Object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/signIn"
+                "$ref": "#/definitions/sign"
               }
             }
           }
@@ -44,28 +51,28 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "회원가입에 성공했습니다."
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
     },
-    "/user/signup": {
+    "/auth/signin": {
       "post": {
-        "tags": ["USER"],
-        "summary": "새로운 유저를 생성합니다.",
+        "tags": ["Auth"],
+        "summary": "로그인을 진행합니다.",
         "requestBody": {
-          "description": "User Obejct",
+          "description": "Sign Object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/signUp"
+                "$ref": "#/definitions/sign"
               }
             }
           }
@@ -73,144 +80,91 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "로그인 성공시 다음 유저 정보와 함께 유저 확인용 jwt를 쿠키로 전송합니다.",
             "schema": {
-              "$ref": "#/definitions/id"
+              "$ref": "#/definitions/userinfo"
             }
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
     },
-    "/user/updateinfo": {
-      "put": {
-        "tags": ["USER"],
-        "summary": "유저 정보를 수정합니다.",
-        "requestBody": {
-          "description": "Cat Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Cat"
-              }
-            }
-          }
-        },
-        "produces": ["application/json"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/user/deleteuser": {
-      "delete": {
-        "tags": ["USER"],
-        "summary": "유저 정보를 삭제합니다.",
-        "requestBody": {
-          "description": "Cat Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Cat"
-              }
-            }
-          }
-        },
-        "produces": ["application/json"],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          },
-          "400": {
-            "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/intro/default": {
+    "/auth/signout": {
       "get": {
-        "tags": ["INTRO"],
-        "summary": "인트로 디폴트 요청입니다.",
-        "requestBody": {
-          "description": "Cat Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Cat"
-              }
-            }
-          }
-        },
-        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "로그아웃을 진행합니다.",
         "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+          "302": {
+            "description": "로그아웃 성공시 쿠키로 발급된 토큰을 삭제하고 메인 페이지로 리다이렉트합니다."
           },
-          "400": {
-            "description": "Failed. Bad post data."
+          "401": {
+            "description": "{message: '토큰이 만료되었습니다. 다시 로그인을 진행해주세요.'}"
+          },
+          "403": {
+            "description": "{message: '먼저 로그인을 진행해주세요'.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
     },
-    "/main/default": {
+    "/auth/kakao": {
       "get": {
-        "tags": ["MAIN"],
-        "summary": "메인 디폴트 요청입니다.",
-        "requestBody": {
-          "description": "Cat Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Cat"
-              }
-            }
-          }
-        },
-        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "카카오 소셜 로그인을 진행합니다.",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "로그인 성공시 다음 유저 정보와 함께 유저 확인용 jwt를 쿠키로 전송합니다.",
             "schema": {
-              "$ref": "#/definitions/id"
+              "$ref": "#/definitions/userinfo"
             }
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
           }
         }
       }
     },
-    "/search/:method/:value": {
+    "/auth/google": {
       "get": {
-        "tags": ["SEARCH"],
-        "summary": "서치 디폴트 요청입니다.",
+        "tags": ["Auth"],
+        "summary": "구글 소셜 로그인을 진행합니다.",
+        "responses": {
+          "200": {
+            "description": "로그인 성공시 다음 유저 정보와 함께 유저 확인용 jwt를 쿠키로 전송합니다.",
+            "schema": {
+              "$ref": "#/definitions/userinfo"
+            }
+          },
+          "400": {
+            "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+          }
+        }
+      }
+    },
+    "/mypage/changeinfo": {
+      "patch": {
+        "tags": ["Mypage"],
+        "summary": "유저 정보를 변경합니다.",
         "requestBody": {
-          "description": "Cat Object",
+          "description": "Sign Object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Cat"
+                "$ref": "#/definitions/changeinfo"
               }
             }
           }
@@ -218,28 +172,142 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
+            "description": "회원정보 변경에 성공했습니다."
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "{message: 실패 사유를 전달합니다.}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+          }
+        }
+      }
+    },
+    "/mypage/changeimage": {
+      "patch": {
+        "tags": ["Mypage"],
+        "summary": "유저 이미지를 변경합니다.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "img": {
+                    "type": "string",
+                    "description": "input name=img로 사진을 전송합니다."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "사진 변경에 성공했습니다."
+          },
+          "400": {
+            "description": "{message: '사진 변경에 실패했습니다.'}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+          }
+        }
+      }
+    },
+    "/movie/updatetag": {
+      "patch": {
+        "tags": ["Movie"],
+        "summary": "유저가 좋아요/ 싫어요를 누른 태그를 반영합니다.",
+        "requestBody": {
+          "description": "Tag Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/tag"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "{message: '에러 내용을 전송합니다.'}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+          }
+        }
+      }
+    },
+    "/search/{method}": {
+      "parameters": [
+        {
+          "name": "method",
+          "in": "path",
+          "required": true,
+          "description": "kor/eng/short/long 혹은 태그 숫자를 입력합니다. 그 외 요청은 신작영화로 전송합니다.",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Search"],
+        "summary": "영화를 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다.",
+            "schema": {
+              "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
           }
         }
       }
     }
   },
-
   "definitions": {
-    "id": {
+    "userinfo": {
+      "type": "object",
       "properties": {
-        "uuid": {
+        "username": {
+          "type": "string"
+        },
+        "profileImg": {
+          "type": "string"
+        },
+        "tag": {
           "type": "string"
         }
       }
     },
-    "signUp": {
+    "changeinfo": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "newPass": {
+          "type": "string",
+          "nullable": true
+        },
+        "newUsername": {
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    "sign": {
       "type": "object",
       "properties": {
         "email": {
@@ -250,41 +318,66 @@
         }
       }
     },
-    "signIn": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
+    "scoredMovie": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": "number",
+          "docid": "string",
+          "title": "string",
+          "titleEng": "string",
+          "director": "string",
+          "actor": "string",
+          "plotKr": "string",
+          "plotEng": "",
+          "runtime": "number",
+          "genre": "string",
+          "image": {
+            "type": "object",
+            "properties": {
+              "posters": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "stlls": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "tag": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "date": "string",
+          "score": "number"
         }
       }
     },
-    "Cat": {
+    "tag": {
       "type": "object",
       "properties": {
-        "genus": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "isHungry": {
-          "type": "boolean"
-        },
-        "lastFedDate": {
-          "type": "string"
-        }
-      }
-    },
-    "Cats": {
-      "type": "object",
-      "properties": {
-        "cats": {
+        "like": {
           "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/Cat"
+          "properties": {
+            "tagnum": {
+              "type": "number"
+            }
+          }
+        },
+        "disLike": {
+          "type": "object",
+          "properties": {
+            "tagnum": {
+              "type": "number"
+            }
           }
         }
       }

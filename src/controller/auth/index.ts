@@ -1,6 +1,3 @@
-import {Request, Response} from 'express'
-import 'dotenv/config'
-
 import localsignin from './localsignin'
 import localsignup from './localsignup'
 import {kakao, kakaoCallBack} from './kakao'

@@ -7,16 +7,19 @@ export default async (
   next: NextFunction,
   err: Error,
   user: any,
-  info?: any,
-) => {
+  info?: object,
+): Promise<void> => {
   if (err || info) {
-    err ? next(err) : res.status(400).send(info)
-    return
-  }
-  req.login(user, {session: false}, err => {
     if (err) {
       next(err)
+    } else {
+      res.status(400).send(info)
+      return
     }
+  }
+  req.login(user, {session: false}, err => {
+    err ? next(err) : null
+
     const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
       expiresIn: '7d',
     })
@@ -25,12 +28,9 @@ export default async (
       // httpOnly: true,
       // secure: true,
     })
-    if (user.provider === 'local') {
-      const {username, email, profileImg, tag} = user
-      return res.status(200).send({username, email, profileImg, tag})
-    } else {
-      const {username, profileImg, tag} = user
-      return res.status(200).send({username, profileImg, tag})
-    }
+    const {username, profileImg, tag} = user
+
+    res.status(200).send({username, profileImg, tag: JSON.parse(tag)})
+    return
   })
 }

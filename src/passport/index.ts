@@ -1,15 +1,18 @@
+import 'dotenv/config'
 import passport from 'passport'
 import * as passportLocal from 'passport-local'
 import * as passportGoogle from 'passport-google-oauth20'
 import * as passportKakao from 'passport-kakao'
 import {compareSync} from 'bcryptjs'
-import 'dotenv/config'
+import {authData} from '../definitions/index'
+import {socialSign} from '../utils'
 import User from '../entity/User'
 
 const LocalStrategy = passportLocal.Strategy
 const GoogleStrategy = passportGoogle.Strategy
 const KakaoStrategy = passportKakao.Strategy
 
+//NOTE - 로그인 전략 변경, session 사용하지 않음.
 // passport.serializeUser((user: any, done) => {
 //   return done(null, user.id)
 // })
@@ -19,38 +22,6 @@ const KakaoStrategy = passportKakao.Strategy
 //     .then(user => done(null, user))
 //     .catch(err => done(err))
 // })
-
-//로그인 전략 변경.
-
-interface authData {
-  provider: string
-  username: string
-  socialId: string
-  profileImg: string
-}
-
-const socialSign = async (
-  data: authData,
-  accessToken: string,
-  refreshToken: string,
-  done: Function,
-) => {
-  const {provider, socialId, username, profileImg} = data
-
-  const isUser: object = await User.findOne({where: {provider, socialId}})
-
-  if (isUser) {
-    return done(null, isUser)
-  } else {
-    let result = await User.socialRegister(
-      provider,
-      socialId,
-      username,
-      profileImg,
-    )
-    return done(null, result)
-  }
-}
 
 passport.use(
   new LocalStrategy(
@@ -86,8 +57,6 @@ passport.use(
       callbackURL: '/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log('accessToken', accessToken)
-      console.log('refreshToken', refreshToken)
       const data: authData = {
         provider: profile.provider,
         socialId: profile.id,
