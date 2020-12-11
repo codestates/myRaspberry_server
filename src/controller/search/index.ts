@@ -1,3 +1,3 @@
-import searchMovie from './searchMovie'
+import searchMovie from "./searchMovie";
 
-export {searchMovie}
+export { searchMovie };
