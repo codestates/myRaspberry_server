@@ -1,6 +1,4 @@
-import {
-  Entity, PrimaryGeneratedColumn, Column, BaseEntity
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 import { UserTag } from "../definitions/index";
 
 @Entity()
