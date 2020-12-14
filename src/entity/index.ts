@@ -1,5 +1,5 @@
-import User from './User'
-import Handlemovie from './Handlemovie'
-import Tag from './Tag'
+import User from "./User";
+import Handlemovie from "./Handlemovie";
+import Tag from "./Tag";
 
-export {User, Handlemovie, Tag}
+export { User, Handlemovie, Tag };
