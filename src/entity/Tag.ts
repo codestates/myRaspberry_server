@@ -1,19 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  BaseEntity,
-} from 'typeorm'
+  Entity, PrimaryGeneratedColumn, Column, BaseEntity
+} from "typeorm";
 
 @Entity()
 export default class Tag extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number
+  id!: number;
 
   @Column()
-  category!: string
+  category!: string;
 
   @Column()
-  name!: string
+  name!: string;
 }

@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "lib": ["es5", "es6"],
     "target": "es6",
-    "outDir": "dist",
+    "outDir": "./dist",
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -13,7 +13,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {"*": ["node_modules/*"]}
+    "paths": { "*": ["node_modules/*"] }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
