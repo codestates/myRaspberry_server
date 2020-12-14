@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
-import { UserTag } from "../definitions/index";
+import { UserTag, SearchCount } from "../definitions/index";
 
 @Entity()
 export default class User extends BaseEntity {
@@ -33,6 +33,9 @@ export default class User extends BaseEntity {
   @Column({ type: "mediumtext" })
   tag: string;
 
+  @Column({ type: "mediumtext" })
+  searchCount: string;
+
   static async register(
     email: string,
     password: string,
@@ -41,6 +44,14 @@ export default class User extends BaseEntity {
     const tag: UserTag = {
       like: {},
       dislike: {}
+    };
+
+    const searchCount: SearchCount = {
+      new: 0,
+      kor: 0,
+      eng: 0,
+      short: 0,
+      long: 0
     };
 
     const { id } = (
@@ -52,7 +63,8 @@ export default class User extends BaseEntity {
             email,
             password,
             username,
-            tag: JSON.stringify(tag)
+            tag: JSON.stringify(tag),
+            searchCount: JSON.stringify(searchCount)
           }
         ])
         .execute()
@@ -71,6 +83,13 @@ export default class User extends BaseEntity {
       like: {},
       dislike: {}
     };
+    const searchCount: SearchCount = {
+      new: 0,
+      kor: 0,
+      eng: 0,
+      short: 0,
+      long: 0
+    };
     const { id } = (
       await this.createQueryBuilder()
         .insert()
@@ -81,7 +100,8 @@ export default class User extends BaseEntity {
             socialId,
             username,
             profileImg,
-            tag: JSON.stringify(tag)
+            tag: JSON.stringify(tag),
+            searchCount: JSON.stringify(searchCount)
           }
         ])
         .execute()

@@ -28,6 +28,7 @@ export default async (
       // httpOnly: true,
       // secure: true,
     });
+
     const { username, profileImg, tag } = user;
 
     res.status(200).send({ username, profileImg, tag: JSON.parse(tag) });
