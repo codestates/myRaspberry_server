@@ -246,24 +246,157 @@
         }
       }
     },
-    "/search/{method}": {
+
+    "/search/new": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "신작 영화를 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다. 유저별로 카운트 횟수가 저장되며, 자동으로 페이징화되어 이전 데이터 이후의 데이터가 전송됩니다.",
+            "schema": {
+              "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
+          }
+        }
+      }
+    },
+
+    "/search/kor": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "한국 영화를 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다. 유저별로 카운트 횟수가 저장되며, 자동으로 페이징화되어 이전 데이터 이후의 데이터가 전송됩니다.",
+            "schema": {
+              "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
+          }
+        }
+      }
+    },
+    "/search/eng": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "해외 영화를 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다. 유저별로 카운트 횟수가 저장되며, 자동으로 페이징화되어 이전 데이터 이후의 데이터가 전송됩니다.",
+            "schema": {
+              "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
+          }
+        }
+      }
+    },
+    "/search/short": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "단편 영화를 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다. 유저별로 카운트 횟수가 저장되며, 자동으로 페이징화되어 이전 데이터 이후의 데이터가 전송됩니다.",
+            "schema": {
+              "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
+          }
+        }
+      }
+    },
+    "/search/long": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "장편 영화를 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다. 유저별로 카운트 횟수가 저장되며, 자동으로 페이징화되어 이전 데이터 이후의 데이터가 전송됩니다.",
+            "schema": {
+              "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
+          }
+        }
+      }
+    },
+    "/search/title?name=${query}": {
       "parameters": [
         {
-          "name": "method",
-          "in": "path",
-          "required": true,
-          "description": "kor/eng/short/long 혹은 태그 숫자를 입력합니다. 그 외 요청은 신작영화로 전송합니다.",
+          "in": "query",
+          "name": "name",
+          "schema": {
+            "type": "string"
+          },
+          "description": "타이틀명으로 영화를 검색해 정보를 전송합니다.",
           "type": "string"
         }
       ],
       "get": {
         "tags": ["Search"],
-        "summary": "영화를 분류해 점수화하여 전송합니다.",
+        "summary": "타이틀명으로 영화를 검색한 후 나온 결과들을 분류해 점수화하여 전송합니다.",
         "responses": {
           "200": {
-            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다.",
+            "description": "개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다. 타이틀 검색의 경우는 페이징화 되지 않습니다.",
             "schema": {
               "$ref": "#/definitions/scoredMovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
+          }
+        }
+      }
+    },
+    "/search/{tagNum}": {
+      "parameters": [
+        {
+          "name": "tagNum",
+          "in": "path",
+          "required": true,
+          "description": "tagNum은 태그 숫자를 입력합니다. tagNum으로 영화를 검색해 결과를 전송합니다.",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Search"],
+        "summary": "해당 태그의 정보와, 검색한 영화들을 분류해 점수화하여 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "해당 태그 정보와, 개인 선호에 따라 산정된 score가 담긴 영화 객체가 배열(limit=25)에 담겨 전송됩니다. tagNum 결과는 페이징되지 않습니다.",
+            "schema": {
+              "$ref": "#/definitions/tagSearchMovie"
             },
             "400": {
               "description": "{message: '에러 내용을 전송합니다.'}"
@@ -315,6 +448,24 @@
         },
         "password": {
           "type": "string"
+        }
+      }
+    },
+    "tagSearchMovie": {
+      "type": "object",
+      "properties": {
+        "tagInfo": {
+          "type": "object",
+          "properties": {
+            "id": "number",
+            "category": "string",
+            "name": "string"
+          }
+        },
+        "result": {
+          "schema": {
+            "$ref": "#/definitions/tagSearchMovie"
+          }
         }
       }
     },
