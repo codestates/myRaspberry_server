@@ -9,6 +9,7 @@
     "start_dev": "nodemon src/app.ts",
     "build": "tsc-watch",
     "start_js": "node ./dist/app.js",
+    "start":"pm2 kill && tsc && authbind --deep pm2 start dist/app.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts"
   },
