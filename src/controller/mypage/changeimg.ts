@@ -3,7 +3,7 @@ import User from "../../entity/User";
 import { deleteImg } from "../../utils/index";
 
 // NOTE req에 Request를 입력하면 이상하게 req.file.location을 못읽어옵니다...
-export default async (req: any, res: Response, next: NextFunction): Promise<void> => {
+export default async (req, res: Response, next: NextFunction): Promise<void> => {
   const id = res.locals.decodedId;
   await User.findOne({ id })
     .then((user) => {

@@ -1,7 +1,10 @@
 declare namespace interfaces {
+  interface EachTag {
+    [key: string]: string;
+  }
   interface UserTag {
-    like: object;
-    dislike: object;
+    like: EachTag;
+    dislike: EachTag;
   }
   interface authData {
     provider: string;

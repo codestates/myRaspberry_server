@@ -7,7 +7,7 @@ AWS.config.update({
   region: process.env.AWS_REGION
 });
 
-export default (img: string) => {
+export default (img: string): Error | object => {
   const s3Address = process.env.AWS_S3_ADDRESS;
   const deleted = img.split(s3Address).join("");
 

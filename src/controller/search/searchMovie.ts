@@ -22,6 +22,8 @@ export default async (req: Request, res: Response): Promise<void> => {
   );
   const results = sortMovie(tags, dbMovies);
 
+  // NOTE - 태그 검색시, 해당 태그명을 함께 돌려줘야함!!
+
   if (results.length) {
     res.status(200).send(results);
     return;

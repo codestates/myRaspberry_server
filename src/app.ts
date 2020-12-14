@@ -1,4 +1,7 @@
 import "reflect-metadata";
+import http from "http";
+import https from "https";
+import fs from "fs";
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -14,12 +17,7 @@ import * as swaggerDocument from "./swagger.json";
 import { isLoggedIn } from "./utils";
 
 import "dotenv/config";
-
-require("./passport");
-
-const http = require("http");
-const https = require("https");
-const fs = require("fs");
+import "./passport";
 
 const privateKey = fs.readFileSync(`${__dirname}/cert/privkey.pem`, "utf8");
 const certificate = fs.readFileSync(`${__dirname}/cert/cert.pem`, "utf8");
