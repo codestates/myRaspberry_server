@@ -19,10 +19,10 @@ import { isLoggedIn } from "./utils";
 import "dotenv/config";
 import "./passport";
 
-const privateKey = fs.readFileSync(`${__dirname}/cert/privkey.pem`, "utf8");
-const certificate = fs.readFileSync(`${__dirname}/cert/cert.pem`, "utf8");
-const chain = fs.readFileSync(`${__dirname}/cert/chain.pem`, "utf8");
-const credentials = { key: privateKey, cert: certificate, ca: chain };
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/myraspberry.shop/privkey.pem', 'utf8')
+const certificate = fs.readFileSync('/etc/letsencrypt/live/myraspberry.shop/cert.pem', 'utf8')
+const chain = fs.readFileSync('/etc/letsencrypt/live/myraspberry.shop/fullchain.pem', 'utf8')
+const credentials = {key: privateKey, cert: certificate, ca: chain}
 
 // NOTE  - typeorm connection
 createConnection()
@@ -30,6 +30,21 @@ createConnection()
   .catch((error) => console.log("TypeORM connection error: ", error));
 
 const app = express();
+
+app.all('*', (req, res, next) => {
+  let protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  if (protocol == 'https') {
+          next();
+  } else {
+          let from = `${protocol}://${req.hostname}${req.url}`;
+          let to = `https://${req.hostname}${req.url}`;
+
+          // log and redirect
+          console.log(`[${req.method}]: ${from} -> ${to}`);
+          res.redirect(to);
+  }
+});
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,17 +60,18 @@ app.use(cors());
 
 app.use(passport.initialize());
 
-app.use("/", express.static(`${__dirname}/build`));
-// app.get('/', (req: express.Request, res: express.Response) => {
-//   res.sendFile(path.join(__dirname, 'build/index.html'))
-// })
+app.use(express.static('/home/ubuntu/myRaspberry_client/client/build'))
+app.get('/', (req: express.Request, res: express.Response) => {
+  res.sendFile('/home/ubuntu/myRaspberry_client/client/build/index.html')
+})
 
-// // NOTE - Routers
+// NOTE - Routers
 app.use("/auth", routes.auth);
-app.use("/movie", isLoggedIn, routes.movie);
+app.use("/movie", routes.movie);
 app.use("/search", isLoggedIn, routes.search);
 app.use("/mypage", isLoggedIn, routes.mypage);
 
+// For api document
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // NOTE  - ERR Handler

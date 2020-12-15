@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
-import { UserTag } from "../definitions/index";
+import { UserTag, SearchCount, SelectMovie } from "../definitions/index";
 
 @Entity()
 export default class User extends BaseEntity {
@@ -33,6 +33,12 @@ export default class User extends BaseEntity {
   @Column({ type: "mediumtext" })
   tag: string;
 
+  @Column({ type: "mediumtext" })
+  searchCount: string;
+
+  @Column({ type: "mediumtext" })
+  selectMovie: string;
+
   static async register(
     email: string,
     password: string,
@@ -40,8 +46,18 @@ export default class User extends BaseEntity {
   ): Promise<User | undefined> {
     const tag: UserTag = {
       like: {},
-      dislike: {}
+      disLike: {}
     };
+
+    const searchCount: SearchCount = {
+      new: 0,
+      kor: 0,
+      eng: 0,
+      short: 0,
+      long: 0
+    };
+
+    const selectMovie: SelectMovie = {};
 
     const { id } = (
       await this.createQueryBuilder()
@@ -52,7 +68,9 @@ export default class User extends BaseEntity {
             email,
             password,
             username,
-            tag: JSON.stringify(tag)
+            tag: JSON.stringify(tag),
+            searchCount: JSON.stringify(searchCount),
+            selectMovie: JSON.stringify(selectMovie)
           }
         ])
         .execute()
@@ -69,8 +87,18 @@ export default class User extends BaseEntity {
   ): Promise<User | undefined> {
     const tag: UserTag = {
       like: {},
-      dislike: {}
+      disLike: {}
     };
+    const searchCount: SearchCount = {
+      new: 0,
+      kor: 0,
+      eng: 0,
+      short: 0,
+      long: 0
+    };
+
+    const selectMovie: SelectMovie = {};
+
     const { id } = (
       await this.createQueryBuilder()
         .insert()
@@ -81,7 +109,9 @@ export default class User extends BaseEntity {
             socialId,
             username,
             profileImg,
-            tag: JSON.stringify(tag)
+            tag: JSON.stringify(tag),
+            searchCount: JSON.stringify(searchCount),
+            selectMovie: JSON.stringify(selectMovie)
           }
         ])
         .execute()
