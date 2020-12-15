@@ -5,5 +5,5 @@ const router = express.Router();
 
 // GET, /movie/updatetag
 router.patch("/updatetag", movieController.updatetag);
-
+router.get("/:title", movieController.callYoutubeApi);
 export default router;
