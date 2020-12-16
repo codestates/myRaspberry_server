@@ -67,7 +67,7 @@ app.get('/', (req: express.Request, res: express.Response) => {
 
 // NOTE - Routers
 app.use("/auth", routes.auth);
-app.use("/movie", isLoggedIn, routes.movie);
+app.use("/movie", routes.movie);
 app.use("/search", isLoggedIn, routes.search);
 app.use("/mypage", isLoggedIn, routes.mypage);
 

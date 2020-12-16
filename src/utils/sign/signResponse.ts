@@ -29,9 +29,14 @@ export default async (
       // secure: true,
     });
 
-    const { username, profileImg, tag } = user;
+    const { username, profileImg, tag, selectMovie } = user;
 
-    res.status(200).send({ username, profileImg, tag: JSON.parse(tag) });
+    res.status(200).send({
+      username,
+      profileImg,
+      tag: JSON.parse(tag),
+      selectMovie: JSON.parse(selectMovie)
+    });
     return;
   });
 };
