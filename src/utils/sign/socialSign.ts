@@ -1,8 +1,8 @@
-import { AuthData } from "../../definitions";
+import { authData } from "../../definitions";
 import { User } from "../../entity";
 
 export default async (
-  data: AuthData,
+  data: authData,
   accessToken: string,
   refreshToken: string,
   done: Function
