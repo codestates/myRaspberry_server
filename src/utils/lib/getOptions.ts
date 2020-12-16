@@ -1,19 +1,11 @@
 import { LessThan, Like, MoreThan, Not } from "typeorm";
 
-function getOptions(
-  method: string,
-  count: number,
-  tagnum1?: string,
-  tagnum2?: string,
-  tagnum3?: string
-): object {
+function getOptions(method: string, tagnum1?: string, tagnum2?: string, tagnum3?: string): object {
   const obj = {
     where: {},
     order: { date: "DESC" },
-    skip: 25 * count,
     take: 25
   };
-
   switch (method) {
     case "kor":
       obj.where = { docid: Like("%K%") };
@@ -29,9 +21,6 @@ function getOptions(
       return obj;
     case "tag":
       obj.where = [{ tag: Like(tagnum1) }, { tag: Like(tagnum2) }, { tag: Like(tagnum3) }];
-      return obj;
-    case "title":
-      obj.where = { title: Like(tagnum1) };
       return obj;
 
     default:

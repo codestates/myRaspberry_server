@@ -4,7 +4,7 @@ import * as passportLocal from "passport-local";
 import * as passportGoogle from "passport-google-oauth20";
 import * as passportKakao from "passport-kakao";
 import { compareSync } from "bcryptjs";
-import { AuthData } from "../definitions/index";
+import { authData } from "../definitions/index";
 import { socialSign } from "../utils";
 import User from "../entity/User";
 
@@ -51,7 +51,7 @@ passport.use(
       callbackURL: "/auth/google/callback"
     },
     (accessToken, refreshToken, profile, done) => {
-      const data: AuthData = {
+      const data: authData = {
         provider: profile.provider,
         socialId: profile.id,
         username: profile.displayName,
@@ -70,7 +70,7 @@ passport.use(
       callbackURL: "/auth/kakao/callback"
     },
     (accessToken, refreshToken, profile, done) => {
-      const data: AuthData = {
+      const data: authData = {
         provider: profile.provider,
         socialId: profile.id,
         username: profile.displayName,
