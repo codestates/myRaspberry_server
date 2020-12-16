@@ -99,8 +99,8 @@
         "tags": ["Auth"],
         "summary": "로그아웃을 진행합니다.",
         "responses": {
-          "302": {
-            "description": "로그아웃 성공시 쿠키로 발급된 토큰을 삭제하고 메인 페이지로 리다이렉트합니다."
+          "201": {
+            "description": "로그아웃 성공시 쿠키로 발급된 토큰을 삭제하고 'you log out'메세지를 전송합니다."
           },
           "401": {
             "description": "{message: '토큰이 만료되었습니다. 다시 로그인을 진행해주세요.'}"
@@ -242,6 +242,64 @@
           },
           "500": {
             "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+          }
+        }
+      }
+    },
+    "/movie/selectmovie": {
+      "patch": {
+        "tags": ["Movie"],
+        "summary": "유저가 좋아요/ 싫어요를 누른 영화를 반영합니다.",
+        "requestBody": {
+          "description": "selectmovie Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/selectmovie"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "400": {
+            "description": "{message: '에러 내용을 전송합니다.'}"
+          },
+          "500": {
+            "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+          }
+        }
+      }
+    },
+    "/movie/{title}": {
+      "parameters": [
+        {
+          "name": "title",
+          "in": "path",
+          "required": true,
+          "description": "title은 영화 제목 입력합니다. 영화 제목으로 youtube에서 영화 관련 영상을 검색해  결과를 전송합니다.",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Movie"],
+        "summary": "해당 제목으로 유튜브에서 영화를 검색해 해당 영상을 전송합니다.",
+        "responses": {
+          "200": {
+            "description": "검색 결과를 전송합니다.",
+            "schema": {
+              "$ref": "#/definitions/youtubemovie"
+            },
+            "400": {
+              "description": "{message: '에러 내용을 전송합니다.'}"
+            },
+            "500": {
+              "description": "{message: '서버에 문제가 있습니다. 관리자에게 문의해주세요'}"
+            }
           }
         }
       }
@@ -469,6 +527,13 @@
         }
       }
     },
+    "youtubemovie": {
+      "type": "object",
+      "properties": {
+        "searchData": "string"
+      }
+    },
+
     "scoredMovie": {
       "type": "array",
       "items": {
@@ -531,6 +596,12 @@
             }
           }
         }
+      }
+    },
+    "selectmovie": {
+      "type": "object",
+      "properties": {
+        "docid": "string"
       }
     }
   }
