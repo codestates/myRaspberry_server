@@ -172,7 +172,7 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "회원정보 변경에 성공했습니다."
+            "description": "{username:'newUsername',''isChanged':true} 객체가 전송됩니다. 비밀번호를 변경한경우도 마찬가지입니다. "
           },
           "400": {
             "description": "{message: 실패 사유를 전달합니다.}"
@@ -206,7 +206,7 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "사진 변경에 성공했습니다."
+            "description": "{'profileImg':'filePath','isChanged':true} 객체가 전송됩니다. "
           },
           "400": {
             "description": "{message: '사진 변경에 실패했습니다.'}"
