@@ -15,7 +15,7 @@ export default async (req, res: Response, next: NextFunction): Promise<void> => 
 
   await User.changeInfo(id, infoData)
     .then(() => {
-      res.status(200).send("사진 변경에 성공했습니다.");
+      res.status(200).send({ ...infoData, isChanged: true });
       return;
     })
     .catch((err) => {
