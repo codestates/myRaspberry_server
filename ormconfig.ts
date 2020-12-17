@@ -8,12 +8,12 @@ module.exports = {
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   synchronize: true,
-  entities: ['src/entity/*.ts'],
-  subscribers: ['src/subscriber/*.js'],
-  migrations: ['src/migration/*.js'],
+  entities: ['dist/entity/*.js'],
+  subscribers: ['dist/subscriber/*.js'],
+  migrations: ['dist/migration/*.js'],
   cli: {
-    entitiesDir: 'src/entity',
-    migrationsDir: 'src/migration',
-    subscribersDir: 'src/subscriber',
+    entitiesDir: 'dist/entity',
+    migrationsDir: 'dist/migration',
+    subscribersDir: 'dist/subscriber',
   },
 }
