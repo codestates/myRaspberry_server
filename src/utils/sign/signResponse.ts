@@ -31,12 +31,13 @@ export default async (
 
     const { username, profileImg, tag, selectMovie } = user;
 
-    res.status(200).send({
-      username,
-      profileImg,
-      tag: JSON.parse(tag),
-      selectMovie: JSON.parse(selectMovie)
-    });
+//    res.status(200).send({
+//      username,
+//      profileImg,
+//      tag: JSON.parse(tag),
+//      selectMovie: JSON.parse(selectMovie)
+//    });
+    res.redirect("/");
     return;
   });
 };
