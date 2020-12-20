@@ -14,6 +14,9 @@ export const kakaoCallBack = async (
 ): Promise<void> => {
   passport.authenticate(
     "kakao",
+    {
+      failureRedirect: "/auth/signin"
+    },
     (err: Error, data: object, info: object): Promise<void> => {
       signResponse(req, res, next, err, data, info);
       return;

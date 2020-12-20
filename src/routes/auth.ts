@@ -4,6 +4,8 @@ import { isLoggedIn } from "../utils";
 
 const router = express.Router();
 
+// GET, auth/getinfo
+router.get("/getinfo", isLoggedIn, authController.getinfo);
 // Local Sign
 // POST, auth/signup
 router.post("/signup", authController.localsignup);
