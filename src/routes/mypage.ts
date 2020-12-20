@@ -8,6 +8,6 @@ const router = express.Router();
 router.patch("/changeinfo", mypageController.changeinfo);
 
 // PUT /mypage/changeimg
-router.put("/changeimage", uploadImg.single("img"), mypageController.changeimg);
+router.post("/changeimage", uploadImg.single("img"), mypageController.changeimg);
 
 export default router;
