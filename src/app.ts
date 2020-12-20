@@ -64,16 +64,8 @@ app.use(express.static('/home/ubuntu/myRaspberry_client/client/build'))
 // app.get("/", (req: express.Request, res: express.Response) => {
 //   res.sendFile("/home/ubuntu/myRaspberry_client/client/build/index.html");
 // });
-app.get(["/", "/users"], (req: express.Request, res: express.Response) => {
+app.get(["/", "/users", "/main", "intro"], (req: express.Request, res: express.Response) => {
   res.sendFile("/home/ubuntu/myRaspberry_client/client/build/index.html");
-});
-
-app.get("/main", (req: express.Request, res: express.Response) => {
-  res.redirect("https://myraspberry.shop/main");
-});
-
-app.get("/intro", (req: express.Request, res: express.Response) => {
-  res.redirect("https://myraspberry.shop/intro");
 });
 
 // NOTE - Routers
