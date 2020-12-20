@@ -69,11 +69,11 @@ app.get(["/", "/users"], (req: express.Request, res: express.Response) => {
 });
 
 app.get("/main", (req: express.Request, res: express.Response) => {
-  res.redirect("/main");
+  res.redirect("https://myraspberry.shop/main");
 });
 
 app.get("/intro", (req: express.Request, res: express.Response) => {
-  res.redirect("/intro");
+  res.redirect("https://myraspberry.shop/intro");
 });
 
 // NOTE - Routers
