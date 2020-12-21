@@ -4,6 +4,7 @@ import "dotenv/config";
 import User from "../../entity/User";
 
 export default async (req: Request, res: Response): Promise<void | Response> => {
+  console.log("he");
   const { email, password } = req.body;
   const user = await User.findOne({
     email

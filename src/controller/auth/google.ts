@@ -16,6 +16,9 @@ export const googleCallBack = async (
 ): Promise<void> => {
   passport.authenticate(
     "google",
+    {
+      failureRedirect: "/auth/signin"
+    },
     (err: Error, data: object, info: object): Promise<void> => {
       signResponse(req, res, next, err, data, info);
       return;
