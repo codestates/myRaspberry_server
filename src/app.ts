@@ -61,9 +61,12 @@ app.use(cors());
 app.use(passport.initialize());
 
 app.use(express.static('/home/ubuntu/myRaspberry_client/client/build'))
-app.get('/', (req: express.Request, res: express.Response) => {
-  res.sendFile('/home/ubuntu/myRaspberry_client/client/build/index.html')
-})
+// app.get("/", (req: express.Request, res: express.Response) => {
+//   res.sendFile("/home/ubuntu/myRaspberry_client/client/build/index.html");
+// });
+app.get(["/", "/users", "/main", "intro"], (req: express.Request, res: express.Response) => {
+  res.sendFile("/home/ubuntu/myRaspberry_client/client/build/index.html");
+});
 
 // NOTE - Routers
 app.use("/auth", routes.auth);

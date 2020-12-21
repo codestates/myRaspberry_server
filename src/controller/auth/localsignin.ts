@@ -7,7 +7,7 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
   passport.authenticate(
     "local",
     (err: Error, data: object, info: object): Promise<void> => {
-      signResponse(req, res, next, err, data, info);
+      signResponse(req, res, next, err, data, info, true);
       return;
     }
   )(req, res, next);

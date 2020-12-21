@@ -7,7 +7,8 @@ export default async (
   next: NextFunction,
   err: Error,
   user: any,
-  info?: object
+  info?: object,
+  isLocal?: boolean
 ): Promise<void> => {
   if (err || info) {
     if (err) {
@@ -29,14 +30,17 @@ export default async (
       // secure: true,
     });
 
-    const { username, profileImg, tag, selectMovie } = user;
-
-    res.status(200).send({
-      username,
-      profileImg,
-      tag: JSON.parse(tag),
-      selectMovie: JSON.parse(selectMovie)
-    });
-    return;
+    if (isLocal) {
+      const { username, profileImg, tag, selectMovie } = user;
+      res.status(200).send({
+        username,
+        profileImg,
+        tag: JSON.parse(tag),
+        selectMovie: JSON.parse(selectMovie)
+      });
+    } else {
+      res.redirect("/");
+      return;
+    }
   });
 };
