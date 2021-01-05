@@ -4,21 +4,13 @@ declare namespace interfaces {
   }
   interface UserTag {
     like: EachTag;
-    disLike: EachTag;
+    dislike: EachTag;
   }
-  interface AuthData {
+  interface authData {
     provider: string;
     username: string;
     socialId: string;
     profileImg: string;
-  }
-
-  interface SelectMovie {
-    [key: string]: string;
-  }
-
-  interface SearchCount {
-    [key: string]: number;
   }
 
   interface SingleMovie {

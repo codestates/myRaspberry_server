@@ -1,5 +1,4 @@
 import * as express from "express";
-import { isLoggedIn } from "../utils";
 import { movieController } from "../controller";
 
 const router = express.Router();

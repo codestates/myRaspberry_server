@@ -1,7 +1,7 @@
 node_modules
 .env
 cert/
-dist
+dist/
 
 # Compiled source #
 ###################

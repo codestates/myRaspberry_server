@@ -29,6 +29,7 @@ export default async (
       // httpOnly: true,
       // secure: true,
     });
+    const { username, profileImg, tag } = user;
 
     if (isLocal) {
       const { username, profileImg, tag, selectMovie } = user;
